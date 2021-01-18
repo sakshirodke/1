@@ -1,0 +1,33 @@
+#include<algorithm>
+#include<fstream>
+#include<vector>
+#include<list>
+
+using namespace std;
+
+void runningMedian(std::ifstream& ifs, std::ofstream& ofs, const unsigned bufSize) {
+    if (bufSize < 1)
+        throw exception("Wrong buffer size.");
+    bool evenSize = bufSize % 2 == 0 ? true : false;
+    list<int> q;
+    vector<int> nums;
+    int n;
+    unsigned count = 0;
+    while (ifs.good()) {
+        ifs >> n;
+        q.push_back(n);
+        auto ub = std::upper_bound(nums.begin(), nums.end(), n);
+        nums.insert(ub, n);
+        count++;
+        if (nums.size() >= bufSize) {
+            auto it = std::find(nums.begin(), nums.end(), q.front());
+            nums.erase(it);
+            q.pop_front();
+            if (evenSize)
+                ofs << count << ": " << (static_cast<double>(nums[nums.size() / 2 - 1] +
+                static_cast<double>(nums[nums.size() / 2]))) / 2.0 << '\n';
+            else
+                ofs << count << ": " << static_cast<double>(nums[nums.size() / 2]);
+        }
+    }
+}
