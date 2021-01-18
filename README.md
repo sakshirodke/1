@@ -1,4 +1,5 @@
 // C program to find smallest and second smallest elements 
+
 #include <stdio.h> 
 #include <limits.h> /* For INT_MAX */ 
 
